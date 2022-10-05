@@ -1,10 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 
 import Home from './routes/Home';
 import NewAd from './routes/NewAd';
+import Ad from './routes/Ad';
+import Login from './routes/Login';
+import Private from './routes/Private';
 
 function App() {
 
@@ -12,8 +14,10 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/ad/new' element={<NewAd />} />
+          <Route path='/' element={<Private><Home /></Private>} />
+          <Route path='/ad/new' element={<Private><NewAd /></Private>} />
+          <Route path='/ad/:id' element={<Private><Ad /></Private>} />
+          <Route path='/login' element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>

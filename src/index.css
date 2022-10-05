@@ -151,6 +151,7 @@ label{
 .ad-home > img{
   width: 180px;
   height: 180px;
+  object-fit:cover;
 }
 
 .invalid-feedback{
@@ -168,4 +169,33 @@ label{
   border: none;
   border-radius: 30px;
   padding: 10px 20px 10px 20px;
+}
+
+.ad{
+  margin: auto;
+  margin-top: 50px;
+  width: 60%;
+  display:flex;
+}
+
+.ad > div{
+  background-color: white;
+}
+
+.ad-grid-images{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+}
+
+.ad-grid-images > img{
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+}
+
+.ad-grid-user{
+  background-color: white;
+  width: 30%;
 }

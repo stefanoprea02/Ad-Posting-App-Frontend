@@ -1,6 +1,21 @@
+import Cookies from "js-cookie";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Nav(){
+
+    const navigate = useNavigate();
+
+    function logout(){
+        console.log("da");
+        fetch("http://localhost:3000/api/auth/logout", {
+            credentials: 'include'
+        });
+        Cookies.set("jwt", "");
+        navigate("/login");
+        
+    }
+
     return <nav className="navbar navbar-light navbar-expand-lg">
                 <div className="container-fluid" style={{display: "flex", justifyContent: "space-between"}}>
                     <a className="navbar-brand" href="http://localhost:3000">Home</a>
@@ -23,7 +38,7 @@ export default function Nav(){
                                     <li><a className="dropdown-item" href="#">Posts</a></li>
                                     <li><a className="dropdown-item" href="#">Messages</a></li>
                                     <li><hr className="dropdown-divider"/></li>
-                                    <li><a className="dropdown-item" href="#">Log out</a></li>
+                                    <li><a className="dropdown-item" onClick={() => logout()}>Log out</a></li>
                                 </ul>
                             </li>
                             <li className="nav-item">

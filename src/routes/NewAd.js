@@ -1,4 +1,5 @@
 import React from "react";
+import { Navigate } from "react-router-dom";
 import CategoryOption from "../components/CategoryOption";
 import Nav from "../components/Nav";
 import camera4 from "../images/camera4.jpg";
@@ -91,6 +92,7 @@ export default function NewAd(){
         const formData2 = new FormData(document.getElementById("form"));
 
         const response = await fetch('http://localhost:8080/ad/new', {
+            credentials: 'include',
             method: 'POST',
             headers: {
                 'Accept': 'application/json'
@@ -99,6 +101,7 @@ export default function NewAd(){
         }).then((response) => response.json())
           .then((data) => {
             setSubmited(true);
+            console.log(data);
             setFormData((prevFormData) => {
                 return {
                     ...prevFormData,
@@ -128,7 +131,7 @@ export default function NewAd(){
                     picture.src = camera4;
                 }
             }else{
-                console.log("DADA");
+                window.location.replace("http://localhost:3000/ad/" + data["succes"]["id"]);
             }
           });
 
@@ -139,7 +142,13 @@ export default function NewAd(){
     }
     
     async function getCategories(){
-        fetch('http://localhost:8080/categories')
+        fetch('http://localhost:8080/categories',{
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
         .then((response) => response.json())
         .then((data) => {
             setCategories(data);
@@ -200,11 +209,13 @@ export default function NewAd(){
                     <div className="panel">
                         <div className="title">
                             <label className="form-label">Ad Title</label>
-                            <input type="text" className="form-control" name="title" id="title" style={{width : "60%"}} onChange={handleChange} value={formData.title}/>
+                            <input type="text" className="form-control" name="title" id="title" style={{width : "60%"}} 
+                                onChange={handleChange} value={formData.title}/>
                         </div>
                         <div className="categoryId">
                             <label>Category</label>
-                            <select className="form-select" id="categoryId" name="categoryId" style={{width : "40%"}} onChange={handleChange} value={formData.categoryId}>
+                            <select className="form-select" id="categoryId" name="categoryId" style={{width : "40%"}} 
+                                onChange={handleChange} value={formData.categoryId}>
                                 <option value="">-- Select Category --</option>
                                 {categoriesOptions}
                             </select>
@@ -214,18 +225,21 @@ export default function NewAd(){
                     <div className="panel">
                         <div className="price">
                             <label>Price</label>
-                            <input type="text" className="form-control" id="price" name="price" style={{width : "40%"}} onChange={handleChange} value={formData.price}/>
+                            <input type="text" className="form-control" id="price" name="price" style={{width : "40%"}} 
+                                onChange={handleChange} value={formData.price}/>
                         </div>
                         <div className="negotiable">
                             <label>Negotiable</label>
-                            <select className="form-select" id="negotiable" name="negotiable" style={{width : "40%"}} onChange={handleChange} value={formData.negotiable}>
+                            <select className="form-select" id="negotiable" name="negotiable" style={{width : "40%"}} 
+                                onChange={handleChange} value={formData.negotiable}>
                                 <option value="True">Yes</option>
                                 <option value="False">No</option>
                             </select>
                         </div>
                         <div className="state">
                             <label>State</label>
-                            <select className="form-select" id="state" name="state" style={{width : "40%"}} onChange={handleChange} value={formData.state}>
+                            <select className="form-select" id="state" name="state" style={{width : "40%"}} 
+                                onChange={handleChange} value={formData.state}>
                                 <option value="Used">Used</option>
                                 <option value="New">New</option>
                             </select>
@@ -237,35 +251,43 @@ export default function NewAd(){
                         <div style={{display : "flex", flexWrap : "wrap"}}>
                             <div className="addimage">
                                 <img src={camera4} className="file-image" id="image1"/>
-                                <input id="imageFile1" name="images" type="file" className="file file-input" onChange={event => handleChange(event, 1)}/>
+                                <input id="imageFile1" name="images" type="file" className="file file-input" 
+                                    onChange={event => handleChange(event, 1)}/>
                             </div>
                             <div className="addimage">
                                 <img src={camera4} className="file-image" id="image2"/>
-                                <input id="imageFile2" name="images" type="file" className="file file-input" onChange={event => handleChange(event, 2)}/>
+                                <input id="imageFile2" name="images" type="file" className="file file-input" 
+                                    onChange={event => handleChange(event, 2)}/>
                             </div>
                             <div className="addimage">
                                 <img src={camera4} className="file-image" id="image3"/>
-                                <input id="imageFile3" name="images" type="file" className="file file-input" onChange={event => handleChange(event, 3)}/>
+                                <input id="imageFile3" name="images" type="file" className="file file-input" 
+                                    onChange={event => handleChange(event, 3)}/>
                             </div>
                             <div className="addimage">
                                 <img src={camera4} className="file-image" id="image4"/>
-                                <input id="imageFile4" name="images" type="file" className="file file-input" onChange={event => handleChange(event, 4)}/>
+                                <input id="imageFile4" name="images" type="file" className="file file-input" 
+                                    onChange={event => handleChange(event, 4)}/>
                             </div>
                             <div className="addimage">
                                 <img src={camera4} className="file-image" id="image5"/>
-                                <input id="imageFile5" name="images" type="file" className="file file-input" onChange={event => handleChange(event, 5)}/>
+                                <input id="imageFile5" name="images" type="file" className="file file-input" 
+                                    onChange={event => handleChange(event, 5)}/>
                             </div>
                             <div className="addimage">
                                 <img src={camera4} className="file-image" id="image6"/>
-                                <input id="imageFile6" name="images" type="file" className="file file-input" onChange={event => handleChange(event, 6)}/>
+                                <input id="imageFile6" name="images" type="file" className="file file-input" 
+                                    onChange={event => handleChange(event, 6)}/>
                             </div>
                             <div className="addimage">
                                 <img src={camera4} className="file-image" id="image7"/>
-                                <input id="imageFile7" name="images" type="file" className="file file-input" onChange={event => handleChange(event, 7)}/>
+                                <input id="imageFile7" name="images" type="file" className="file file-input" 
+                                    onChange={event => handleChange(event, 7)}/>
                             </div>
                             <div className="addimage">
                                 <img src={camera4} className="file-image" id="image8"/>
-                                <input id="imageFile8" name="images" type="file" className="file file-input" onChange={event => handleChange(event, 8)}/>
+                                <input id="imageFile8" name="images" type="file" className="file file-input" 
+                                    onChange={event => handleChange(event, 8)}/>
                             </div>
                         </div>
                     </div>
@@ -301,7 +323,7 @@ export default function NewAd(){
                     </div>
 
                     <div className="panel">
-                        <input className="btn btn-primary" type="button" value="Submit" onClick={handleSubmit}></input>
+                        <input className="btn btn-primary" type="button" value="Submit" onClick={() => handleSubmit()}></input>
                     </div>
 
                 </form>

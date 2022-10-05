@@ -2,14 +2,24 @@ import React from "react";
 import Category from '../components/Category';
 import Nav from "../components/Nav";
 import MiniAd from "../components/MiniAd";
+import { Link } from "react-router-dom";
+import { useUser } from "../UserProvider";
 
 export default function Home(){
 
     const[data, setData] = React.useState({});
     const[adData, setAdData] = React.useState({});
+    
+    const user = useUser();
 
     async function getCategories(){
-        fetch('http://localhost:8080/categories')
+        fetch('http://localhost:8080/categories',{
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
         .then((response) => response.json())
         .then((data) => {
             setData(data);
@@ -17,10 +27,15 @@ export default function Home(){
     }
 
     async function getAds(){
-        fetch('http://localhost:8080/ads')
+        fetch('http://localhost:8080/ads',{
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
             setAdData(data);
         });
     }
@@ -44,15 +59,14 @@ export default function Home(){
 
     let ads = [];
     if(Object.keys(adData).length != 0){
-        console.log(adData);
         ads = adData.map(obiect => {
-            return <MiniAd 
+            return <Link to={'/ad/' + obiect.id} style={{ textDecoration: 'none' }} key={obiect.id}><MiniAd 
                 images={obiect.images}
                 id={obiect.id}
                 key={obiect.id}
                 title={obiect.title}
                 price={obiect.price}
-            />
+            /></Link>
         });
     }
 
