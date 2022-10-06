@@ -59,14 +59,17 @@ export default function Home(){
 
     let ads = [];
     if(Object.keys(adData).length != 0){
+        console.log(adData);
         ads = adData.map(obiect => {
-            return <Link to={'/ad/' + obiect.id} style={{ textDecoration: 'none' }} key={obiect.id}><MiniAd 
+            return <MiniAd 
                 images={obiect.images}
                 id={obiect.id}
                 key={obiect.id}
                 title={obiect.title}
                 price={obiect.price}
-            /></Link>
+                location={obiect.location}
+                date={obiect.date}
+            />
         });
     }
 

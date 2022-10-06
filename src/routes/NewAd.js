@@ -1,8 +1,10 @@
+import jwtDecode from "jwt-decode";
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import CategoryOption from "../components/CategoryOption";
 import Nav from "../components/Nav";
 import camera4 from "../images/camera4.jpg";
+import { useUser } from "../UserProvider";
 
 export default function NewAd(){
 
@@ -32,8 +34,9 @@ export default function NewAd(){
     });
 
     const[submited, setSubmited] = React.useState(false);
-
     const[categories, setCategories] = React.useState({});
+    const navigate = useNavigate();
+    const user = useUser();
 
     function readFileDataAsBase64(f) {
         const file = f;
@@ -101,7 +104,6 @@ export default function NewAd(){
         }).then((response) => response.json())
           .then((data) => {
             setSubmited(true);
-            console.log(data);
             setFormData((prevFormData) => {
                 return {
                     ...prevFormData,
@@ -109,7 +111,6 @@ export default function NewAd(){
                 }
             })
             if("error" in data){
-                console.log(data["error"]);
                 let keys = Object.keys(data["error"]);
                 for(const key of keys){
                     let message = data["error"][key];
@@ -131,7 +132,7 @@ export default function NewAd(){
                     picture.src = camera4;
                 }
             }else{
-                window.location.replace("http://localhost:3000/ad/" + data["succes"]["id"]);
+                navigate(`/ad/${data["succes"]["id"]}`);
             }
           });
 
@@ -205,7 +206,7 @@ export default function NewAd(){
                 <h2 style={{textAlign : "left", padding: "30px 0px 20px 0px", marginLeft: "10%"}}>Publish new ad</h2>
 
                 <form action="http://localhost:8080/ad/new" method="POST" encType="multipart/form-data" id="form">
-                    <input type="hidden" name="id" id="id"/>
+                    <input type="hidden" id="username" name="username" value={jwtDecode(user.jwt).sub} />
                     <div className="panel">
                         <div className="title">
                             <label className="form-label">Ad Title</label>

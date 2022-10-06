@@ -1,10 +1,13 @@
 import Cookies from "js-cookie";
+import jwtDecode from "jwt-decode";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../UserProvider";
 
 export default function Nav(){
 
     const navigate = useNavigate();
+    const user = useUser();
 
     function logout(){
         console.log("da");
@@ -32,7 +35,7 @@ export default function Nav(){
                             </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Dropdown link
+                                    {jwtDecode(user.jwt).sub}
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a className="dropdown-item" href="#">Posts</a></li>

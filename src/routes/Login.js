@@ -43,7 +43,6 @@ export default function Login(){
             }
         })
           .then((data) => {
-            console.log(data);
             user.setJwt(data);
             Cookies.set('jwt', data);
             navigate("/");
