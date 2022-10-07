@@ -14,7 +14,7 @@ code {
 }
 
 body{
-  background-color: rgb(242, 244, 245) !important;
+  background-color: #eee;
 }
 
 p{
@@ -163,6 +163,11 @@ label{
 
 .invalid-feedback{
   font-size: 100% !important;
+  margin-bottom: 10px !important;
+}
+
+.is-invalid{
+  margin-bottom: 0px !important;
 }
 
 .form-select{
@@ -222,4 +227,68 @@ label{
 
 .details-price > p{
   margin: 0px 0px 0px 10px;
+}
+
+.login-panel{
+  background-color: white;
+  margin-top: 200px;
+  width: fit-content;
+  margin: 200px auto 0px auto;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+.login-form{
+  padding: 30px;
+}
+
+.buttons{
+  display: flex;
+  width: 100%;
+}
+
+.button{
+  width: 50%;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.button-selected{
+  background-color: white;
+}
+
+.button-notselected{
+  background-color: rgb(137, 155, 167);
+}
+
+.button-notselected:hover{
+  background-color: white;
+  transition: 0.2s;
+}
+
+.button-left{
+  border-top-right-radius: 0px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.button-right{
+  border-top-right-radius: 15px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.faButton{
+  border: none;
+  background-color: white;
+}
+
+.fa-heart{
+  font-size: 24px;
 }

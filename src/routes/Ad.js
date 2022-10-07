@@ -1,4 +1,6 @@
-import { data } from "jquery";
+import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useParams, withRouter } from "react-router-dom";
 import Nav from "../components/Nav";
@@ -10,6 +12,27 @@ export default function Ad(){
     const [ad, setAd] = React.useState({});
     const [user, setUser] = React.useState({});
     const [fetched, setFetched] = React.useState(false);
+    const [favorite, setFavorite] = React.useState(false);
+
+    function adFavorite(){
+        fetch("http://localhost:8080/adFavorite/" + id, {credentials: "include"})
+        .then((response) => response.json())
+        .then((data) => data);
+        setFavorite(true)
+    }
+
+    function removeFavorite(){
+        fetch("http://localhost:8080/removeFavorite/" + id, {credentials: "include"})
+        .then((response) => response.json())
+        .then((data) => data);
+        setFavorite(false)
+    }
+
+    function checkFavorite(){
+        fetch("http://localhost:8080/checkFavorite/" + id, {credentials: "include"})
+        .then((response) => response.json())
+        .then((data) => setFavorite(data));
+    }
 
     function getAd(){
         fetch('http://localhost:8080/ad/' + id,{
@@ -27,6 +50,7 @@ export default function Ad(){
 
     React.useEffect(function(){
         getAd();
+        checkFavorite();
     }, []);
 
     React.useEffect(function(){
@@ -52,7 +76,8 @@ export default function Ad(){
                         <div className="details">
                             <div className="details-top">
                                 <p>Posted at {ad.date}</p>
-                                <p>Favorite</p>
+                                {favorite === false && <button onClick={() => adFavorite()} className="faButton"><FontAwesomeIcon icon={farHeart} /></button>}
+                                {favorite === true && <button onClick={() => removeFavorite()} className="faButton"><FontAwesomeIcon icon={faHeart} /></button>}
                             </div>
                             <div className="details-title">
                                 <h3>{ad.title}</h3>

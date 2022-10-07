@@ -10,8 +10,7 @@ export default function Nav(){
     const user = useUser();
 
     function logout(){
-        console.log("da");
-        fetch("http://localhost:3000/api/auth/logout", {
+        fetch("http://localhost:8080/api/auth/logout", {
             credentials: 'include'
         });
         Cookies.set("jwt", "");
@@ -22,7 +21,8 @@ export default function Nav(){
     return <nav className="navbar navbar-light navbar-expand-lg">
                 <div className="container-fluid" style={{display: "flex", justifyContent: "space-between"}}>
                     <a className="navbar-brand" href="http://localhost:3000">Home</a>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent" style={{flexGrow: "0"}}>
@@ -34,7 +34,8 @@ export default function Nav(){
                                 <a className="nav-link">Favorites</a>
                             </li>
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" 
+                                data-bs-toggle="dropdown" aria-expanded="false">
                                     {jwtDecode(user.jwt).sub}
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

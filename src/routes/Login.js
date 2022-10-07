@@ -1,80 +1,49 @@
-import Cookies from "js-cookie";
 import React from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useUser } from "../UserProvider";
+import LoginForm from "../components/LoginForm";
+import RegisterForm from "../components/RegisterForm";
 
 export default function Login(){
+    const [type, setType] = React.useState("login");
 
-    const user = useUser();
+    function handleButton(source){
+        let login = document.getElementById("login");
+        let register = document.getElementById("register");
 
-    const navigate = useNavigate();
-    
-    const[formData, setFormData] = React.useState({
-        username: "",
-        password: ""
-    });
-
-    const[error, setError] = React.useState("false");
-
-    function handleChange(event){
-        setFormData(prevFormData => {
-            return {
-                ...prevFormData,
-                [event.target.name] : event.target.value
+        if(source === "login"){
+            if(register != null && register.classList.contains("button-selected")){
+                register.classList.remove("button-selected");
+                register.classList.add("button-notselected");
+                login.classList.remove("button-notselected");
+                login.classList.add("button-selected");
+                setType("login");
             }
-        });
+        }else{
+            if(login != null && login.classList.contains("button-selected")){
+                login.classList.remove("button-selected");
+                login.classList.add("button-notselected");
+                register.classList.remove("button-notselected");
+                register.classList.add("button-selected");
+                setType("register");
+            }
+        }
     }
 
-    function handleSubmit(){
-        const formData2 = new FormData(document.getElementById("form"));
-
-        const response = fetch("http://localhost:8080/api/auth/login", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-            },
-            body: formData2
-        }).then((response) => {
-            if(response.ok){
-                return response.text();
-            }
-            else{
-                setError("true");
-            }
-        })
-          .then((data) => {
-            user.setJwt(data);
-            Cookies.set('jwt', data);
-            navigate("/");
-            return data;
-          });
-    }
-
-    return  <div>
-                <form action="http://localhost:8080/ad/new" method="POST" id="form">
+    return  <div className="login-panel">
+                <div className="buttons">
+                    <button id="login" type="button" className="button button-selected button-left" 
+                        onClick={() => handleButton("login")}>Login</button>
+                    <button id="register" type="button" className="button button-notselected button-right" 
+                        onClick={() => handleButton("register")}>Register</button>
+                </div>
+                {type === "login" && 
                     <div>
-                        <input 
-                            type="text" 
-                            className="form-control" 
-                            id="username" 
-                            name="username" 
-                            placeholder="username" 
-                            onChange={handleChange} 
-                            value={formData.price}
-                        />
+                        <LoginForm />
                     </div>
+                }
+                {type === "register" && 
                     <div>
-                        <input 
-                            type="text" 
-                            className="form-control has-error" 
-                            id="password" 
-                            name="password" 
-                            placeholder="password" 
-                            onChange={handleChange} 
-                            value={formData.price}
-                        />
+                        <RegisterForm />
                     </div>
-                    <input className="btn btn-primary" type="button" value="Submit" onClick={() => handleSubmit()}></input>
-                </form>
+                }
             </div>
 }
