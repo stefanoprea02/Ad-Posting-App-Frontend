@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useParams, withRouter } from "react-router-dom";
 import Nav from "../components/Nav";
+import {adFavorite, removeFavorite, checkFavorite, getAd, getUser} from "../Functions";
 
 export default function Ad(){
 
@@ -14,57 +15,26 @@ export default function Ad(){
     const [fetched, setFetched] = React.useState(false);
     const [favorite, setFavorite] = React.useState(false);
 
-    function adFavorite(){
-        fetch("http://localhost:8080/adFavorite/" + id, {credentials: "include"})
-        .then((response) => response.json())
-        .then((data) => data);
-        setFavorite(true)
-    }
-
-    function removeFavorite(){
-        fetch("http://localhost:8080/removeFavorite/" + id, {credentials: "include"})
-        .then((response) => response.json())
-        .then((data) => data);
-        setFavorite(false)
-    }
-
-    function checkFavorite(){
-        fetch("http://localhost:8080/checkFavorite/" + id, {credentials: "include"})
-        .then((response) => response.json())
-        .then((data) => setFavorite(data));
-    }
-
-    function getAd(){
-        fetch('http://localhost:8080/ad/' + id,{
-            credentials: 'include',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setAd(data);
-            });
-    }
-
-    React.useEffect(function(){
-        getAd();
-        checkFavorite();
-    }, []);
-
-    React.useEffect(function(){
-        if(Object.keys(ad).length !== 0){
-            fetch('http://localhost:8080/user/' + ad.username,{
-                credentials: 'include',
-                method: 'GET'
-            }).then((response) => response.json())
-              .then((data) => {
-                setUser(data);
+    React.useEffect(() => {
+        async function fetchData(){
+            if(ad && Object.keys(ad).length !== 0){
+                let userData = await getUser(ad.username);
+                setUser(userData);
                 setFetched(true);
-              })
+            }
         }
+        fetchData();
     },[ad]);
+
+    React.useEffect(() => {
+        async function fetchData(){
+            const ad = await getAd(id);
+            const favorite = await checkFavorite(id);
+            setAd(ad);
+            setFavorite(favorite);
+        }
+        fetchData();
+    }, []);
 
     return  fetched ? <div>
                 <Nav />
@@ -76,8 +46,10 @@ export default function Ad(){
                         <div className="details">
                             <div className="details-top">
                                 <p>Posted at {ad.date}</p>
-                                {favorite === false && <button onClick={() => adFavorite()} className="faButton"><FontAwesomeIcon icon={farHeart} /></button>}
-                                {favorite === true && <button onClick={() => removeFavorite()} className="faButton"><FontAwesomeIcon icon={faHeart} /></button>}
+                                {favorite === false && <button onClick={async () => { await adFavorite(id); setFavorite(true);}} 
+                                    className="faButton"><FontAwesomeIcon icon={farHeart} /></button>}
+                                {favorite === true && <button onClick={async () => { await removeFavorite(id); setFavorite(false);}} 
+                                    className="faButton"><FontAwesomeIcon icon={faHeart} /></button>}
                             </div>
                             <div className="details-title">
                                 <h3>{ad.title}</h3>

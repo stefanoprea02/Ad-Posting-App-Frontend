@@ -3,6 +3,8 @@ import React from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import CategoryOption from "../components/CategoryOption";
 import Nav from "../components/Nav";
+import TextInput from "../components/TextInput";
+import { getCategories } from "../Functions";
 import camera4 from "../images/camera4.jpg";
 import { useUser } from "../UserProvider";
 
@@ -141,24 +143,15 @@ export default function NewAd(){
             errors[key] = [];
         }
     }
-    
-    async function getCategories(){
-        fetch('http://localhost:8080/categories',{
-            credentials: 'include',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            setCategories(data);
-        })
-    }
 
-    React.useEffect(function(){
-        getCategories();
+    React.useEffect(() => {
+        async function fetchData(){
+            let cate = await getCategories();
+            setCategories(cate);
+        }
+        fetchData();
     },[]);
+
 
     React.useEffect(function(){
         if(submited == true){
@@ -201,6 +194,15 @@ export default function NewAd(){
         })
     }
 
+    let images = [];
+    for(let i = 1; i <= 8; i++){
+        images[i] = <div className="addimage" key={i}>
+                        <img src={camera4} className="file-image" id={"image" + i}/>
+                        <input id={"imageFile" + i} name="images" type="file" className="file file-input" 
+                            onChange={event => handleChange(event, i)}/>
+                    </div>
+    }
+
     return  <div>
                 <Nav />
                 <h2 style={{textAlign : "left", padding: "30px 0px 20px 0px", marginLeft: "10%"}}>Publish new ad</h2>
@@ -208,11 +210,7 @@ export default function NewAd(){
                 <form action="http://localhost:8080/ad/new" method="POST" encType="multipart/form-data" id="form">
                     <input type="hidden" id="username" name="username" value={jwtDecode(user.jwt).sub} />
                     <div className="panel">
-                        <div className="title">
-                            <label className="form-label">Ad Title</label>
-                            <input type="text" className="form-control" name="title" id="title" style={{width : "60%"}} 
-                                onChange={handleChange} value={formData.title}/>
-                        </div>
+                        <TextInput title="title" value={formData.title} handleChange={handleChange} width={"60%"}/>
                         <div className="categoryId">
                             <label>Category</label>
                             <select className="form-select" id="categoryId" name="categoryId" style={{width : "40%"}} 
@@ -224,11 +222,7 @@ export default function NewAd(){
                     </div>
 
                     <div className="panel">
-                        <div className="price">
-                            <label>Price</label>
-                            <input type="text" className="form-control" id="price" name="price" style={{width : "40%"}} 
-                                onChange={handleChange} value={formData.price}/>
-                        </div>
+                        <TextInput title="price" value={formData.price} handleChange={handleChange} width={"40%"}/>
                         <div className="negotiable">
                             <label>Negotiable</label>
                             <select className="form-select" id="negotiable" name="negotiable" style={{width : "40%"}} 
@@ -250,46 +244,7 @@ export default function NewAd(){
                     <div className="panel">
                         <label>Images</label>
                         <div style={{display : "flex", flexWrap : "wrap"}}>
-                            <div className="addimage">
-                                <img src={camera4} className="file-image" id="image1"/>
-                                <input id="imageFile1" name="images" type="file" className="file file-input" 
-                                    onChange={event => handleChange(event, 1)}/>
-                            </div>
-                            <div className="addimage">
-                                <img src={camera4} className="file-image" id="image2"/>
-                                <input id="imageFile2" name="images" type="file" className="file file-input" 
-                                    onChange={event => handleChange(event, 2)}/>
-                            </div>
-                            <div className="addimage">
-                                <img src={camera4} className="file-image" id="image3"/>
-                                <input id="imageFile3" name="images" type="file" className="file file-input" 
-                                    onChange={event => handleChange(event, 3)}/>
-                            </div>
-                            <div className="addimage">
-                                <img src={camera4} className="file-image" id="image4"/>
-                                <input id="imageFile4" name="images" type="file" className="file file-input" 
-                                    onChange={event => handleChange(event, 4)}/>
-                            </div>
-                            <div className="addimage">
-                                <img src={camera4} className="file-image" id="image5"/>
-                                <input id="imageFile5" name="images" type="file" className="file file-input" 
-                                    onChange={event => handleChange(event, 5)}/>
-                            </div>
-                            <div className="addimage">
-                                <img src={camera4} className="file-image" id="image6"/>
-                                <input id="imageFile6" name="images" type="file" className="file file-input" 
-                                    onChange={event => handleChange(event, 6)}/>
-                            </div>
-                            <div className="addimage">
-                                <img src={camera4} className="file-image" id="image7"/>
-                                <input id="imageFile7" name="images" type="file" className="file file-input" 
-                                    onChange={event => handleChange(event, 7)}/>
-                            </div>
-                            <div className="addimage">
-                                <img src={camera4} className="file-image" id="image8"/>
-                                <input id="imageFile8" name="images" type="file" className="file file-input" 
-                                    onChange={event => handleChange(event, 8)}/>
-                            </div>
+                            {images}
                         </div>
                     </div>
 
@@ -302,25 +257,13 @@ export default function NewAd(){
                     </div>
 
                     <div className="panel">
-                        <div className="location">
-                            <label>Location</label>
-                            <input type="text" className="form-control" id="location" name="location"
-                                    style={{width : "40%"}} onChange={handleChange} value={formData.location}/>
-                        </div>
+                        <TextInput title="location" value={formData.location} handleChange={handleChange} width={"40%"}/>
                     </div>
 
                     <div className="panel">
                         <h2>Contact Info</h2>
-                        <div className="contact_info">
-                            <label>Contact Name</label>
-                            <input type="text" className="form-control" id="contact_info" name="contact_info"
-                                    style={{width : "40%"}} onChange={handleChange} value={formData.contact_info}/>
-                        </div>
-                        <div className="phone_number">
-                            <label>Phone Number</label>
-                            <input type="text" className="form-control" id="phone_number" name="phone_number"
-                                style={{width : "40%"}} onChange={handleChange} value={formData.phone_number}/>
-                        </div>
+                        <TextInput title="contact_info" value={formData.contact_info} handleChange={handleChange} width={"40%"}/>
+                        <TextInput title="phone_number" value={formData.phone_number} handleChange={handleChange} width={"40%"}/>
                     </div>
 
                     <div className="panel">

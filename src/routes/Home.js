@@ -2,52 +2,29 @@ import React from "react";
 import Category from '../components/Category';
 import Nav from "../components/Nav";
 import MiniAd from "../components/MiniAd";
-import { Link } from "react-router-dom";
 import { useUser } from "../UserProvider";
+import { getAds, getCategories } from "../Functions";
 
 export default function Home(){
 
-    const[data, setData] = React.useState({});
+    const[categoryData, setCategoryData] = React.useState({});
     const[adData, setAdData] = React.useState({});
     
     const user = useUser();
 
-    async function getCategories(){
-        fetch('http://localhost:8080/categories',{
-            credentials: 'include',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            setData(data);
-        });
-    }
-
-    async function getAds(){
-        fetch('http://localhost:8080/ads',{
-            credentials: 'include',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            setAdData(data);
-        });
-    }
-
-    React.useEffect(function(){
-        getCategories();
-        getAds();
+    React.useEffect(() => {
+        async function fetchData(){
+            let cate = await getCategories();
+            let ad = await getAds();
+            setCategoryData(cate);
+            setAdData(ad);
+        }
+        fetchData();
     },[]);
 
     let categories = [];
-    if(Object.keys(data).length != 0){
-        categories = data.map(obiect => {
+    if(categoryData && Object.keys(categoryData).length != 0){
+        categories = categoryData.map(obiect => {
         return <Category 
             description={obiect.description}
             id={obiect.id}
@@ -58,8 +35,7 @@ export default function Home(){
     }
 
     let ads = [];
-    if(Object.keys(adData).length != 0){
-        console.log(adData);
+    if(adData && Object.keys(adData).length != 0){
         ads = adData.map(obiect => {
             return <MiniAd 
                 images={obiect.images}
