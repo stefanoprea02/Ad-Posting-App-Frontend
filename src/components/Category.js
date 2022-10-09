@@ -1,8 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { categoryDescriptionToName } from "../Functions";
 
 export default function Category(props){
-    return  <a className="category">
+    return  <Link className="category" to={`/ads/filter`} state={{category: props.description}}>
                 <img src={`data:image/jpeg;base64,${props.image}`} className="category-img"></img>
-                <span>{props.description}</span>
-            </a>
+                <span>{categoryDescriptionToName(props.description)}</span>
+            </Link>
 }

@@ -95,3 +95,28 @@ export async function getAds(){
         return e;
     }
 }
+
+export function categoryDescriptionToName(description){
+    let result = description;
+    while(result.includes("-")){
+        result = result.replace("-", " ");
+    }
+    result = result.charAt(0).toUpperCase() + result.slice(1);
+    return result;
+}
+
+export async function getAdsFiltered(url){
+    try{
+        return fetch(url, {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => response.json())
+        .then((data) => data);
+    }
+    catch(e){
+        return e;
+    }
+}

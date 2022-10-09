@@ -12,7 +12,7 @@ export default function NewAd(){
 
     const[formData, setFormData] = React.useState({
         title: "",
-        categoryId: "",
+        categoryName: "",
         price: "",
         negotiable: "Yes",
         state: "Used",
@@ -25,7 +25,7 @@ export default function NewAd(){
 
     const[errors, setErrors] = React.useState({
         title: [],
-        categoryId: [],
+        categoryName: [],
         price: [],
         description: [],
         state: [],
@@ -207,14 +207,14 @@ export default function NewAd(){
                 <Nav />
                 <h2 style={{textAlign : "left", padding: "30px 0px 20px 0px", marginLeft: "10%"}}>Publish new ad</h2>
 
-                <form action="http://localhost:8080/ad/new" method="POST" encType="multipart/form-data" id="form">
+                <form action="http://localhost:8080/ad/new" method="POST" encType="multipart/form-data" id="form" className="form">
                     <input type="hidden" id="username" name="username" value={jwtDecode(user.jwt).sub} />
                     <div className="panel">
                         <TextInput title="title" value={formData.title} handleChange={handleChange} width={"60%"}/>
-                        <div className="categoryId">
+                        <div className="categoryName">
                             <label>Category</label>
-                            <select className="form-select" id="categoryId" name="categoryId" style={{width : "40%"}} 
-                                onChange={handleChange} value={formData.categoryId}>
+                            <select className="form-select" id="categoryName" name="categoryName" style={{width : "40%"}} 
+                                onChange={handleChange} value={formData.categoryName}>
                                 <option value="">-- Select Category --</option>
                                 {categoriesOptions}
                             </select>

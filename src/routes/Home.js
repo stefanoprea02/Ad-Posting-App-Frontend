@@ -4,6 +4,7 @@ import Nav from "../components/Nav";
 import MiniAd from "../components/MiniAd";
 import { useUser } from "../UserProvider";
 import { getAds, getCategories } from "../Functions";
+import SearchBar from "../components/SearchBar";
 
 export default function Home(){
 
@@ -51,7 +52,8 @@ export default function Home(){
 
     return  <div>
                 <Nav />
-                <div style={{backgroundColor : "white", marginTop : "20px"}}>
+                <SearchBar />
+                <div style={{backgroundColor : "white", marginTop : "30px"}}>
                     <h2 className="h2-title">Main Categories:</h2>
                     <div style={{paddingBottom : "20px"}}>
                         <div className="categories">

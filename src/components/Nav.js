@@ -1,21 +1,30 @@
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../UserProvider";
 
-export default function Nav(){
+export default function Nav(props){
 
     const navigate = useNavigate();
     const user = useUser();
 
     function logout(){
         fetch("http://localhost:8080/api/auth/logout", {
-            credentials: 'include'
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.jwt}`
+            }
         });
-        Cookies.set("jwt", "");
+        Cookies.set("jwt", null);
+        user.setJwt(null);
         navigate("/login");
-        
+    }
+
+    function linkClick(x, y){
+        if(window.location.href == "http://localhost:3000/ads/filter")
+            props.childToParent(x, y);
     }
 
     return <nav className="navbar navbar-light navbar-expand-lg">
@@ -31,7 +40,7 @@ export default function Nav(){
                                 <a className="nav-link">Messages</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link">Favorites</a>
+                                <Link to="/ads/filter" state={{favorite: true}} className="nav-link" onClick={() => linkClick("favorite", true)}>Favorites</Link>
                             </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" 
@@ -39,7 +48,7 @@ export default function Nav(){
                                     {jwtDecode(user.jwt).sub}
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a className="dropdown-item" href="#">Posts</a></li>
+                                    <Link to="/ads/filter" state={{username: jwtDecode(user.jwt).sub}} className="dropdown-item" onClick={() => linkClick("username", jwtDecode(user.jwt).sub)}>My Posts</Link>
                                     <li><a className="dropdown-item" href="#">Messages</a></li>
                                     <li><hr className="dropdown-divider"/></li>
                                     <li><a className="dropdown-item" onClick={() => logout()}>Log out</a></li>

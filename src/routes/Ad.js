@@ -2,8 +2,9 @@ import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { useParams, withRouter } from "react-router-dom";
+import { Link, useParams, withRouter } from "react-router-dom";
 import Nav from "../components/Nav";
+import SearchBar from "../components/SearchBar";
 import {adFavorite, removeFavorite, checkFavorite, getAd, getUser} from "../Functions";
 
 export default function Ad(){
@@ -38,6 +39,7 @@ export default function Ad(){
 
     return  fetched ? <div>
                 <Nav />
+                <SearchBar />
                 <div className="row justify-content-center ad">
                     <div className="col-md-6">
                         <div className="images">
@@ -69,7 +71,7 @@ export default function Ad(){
                             <h3>{user.username}</h3>
                             <p>Registered on {user.date}</p>
                             <p>Last online on {user.lastOnline.split("T")[0]} at {user.lastOnline.split("T")[1].split(".")[0]}</p>
-                            <p style={{textAlign: "center"}}><a>More from this seller</a></p>
+                            <p style={{textAlign: "center", marginTop: "15px", fontSize: "17px"}}><Link to="/ads/filter" state={{username: user.username}}>More from this seller</Link></p>
                         </div>
                         <div className="location">
                             <h4>Location</h4>
