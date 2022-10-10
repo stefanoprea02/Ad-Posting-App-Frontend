@@ -120,3 +120,8 @@ export async function getAdsFiltered(url){
         return e;
     }
 }
+
+export const judete = ["Bihor", "Arad", "Timiș", "Caraș-Severin", "Mehedinți", "Hunedoara", "Cluj", "Sălaj", "Satu-Mare", 
+        "Maramureș", "Bistrița-Năsăud", "Suceava", "Botoșani", "Neamț", "Iași", "Mureș", "Vaslui", "Harghita", "Brașov", "Bacău", 
+        "Alba", "Covasna", "Sibiu", "Vrancea", "Galați", "Vâlcea", "Dâmbovița", "Buzău", "Brăila", "Tulcea", "Gorj", "Dolj", "Olt", 
+        "Argeș", "Teleorman", "Prahova", "Ilfov", "Ialomița", "Călărași", "Giurgiu", "Constanța", "București"];

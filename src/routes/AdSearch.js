@@ -14,10 +14,12 @@ export default function AdSearch(props){
     const {category} = location.state;
     const {username} = location.state;
     const {favorite} = location.state;
+    const {searchText} = location.state;
     const [data, setData] = React.useState({
         category: category,
         favorite: favorite,
-        username: username
+        username: username,
+        searchText: searchText
     })
 
     const childToParent = (x, y) => {
@@ -33,6 +35,8 @@ export default function AdSearch(props){
         })
     }
 
+    console.log(url);
+
     React.useEffect(() => {
         if(url.charAt(url.length - 1) !== "?"){
             url = url + "&";
@@ -45,6 +49,9 @@ export default function AdSearch(props){
         }
         if(data.username != null){
             url = url + "username=" + data.username;
+        }
+        if(data.searchText != null){
+            url = url + "searchText=" + data.searchText;
         }
         async function fetchData(){
             let ads = await getAdsFiltered(url);
@@ -72,7 +79,7 @@ export default function AdSearch(props){
     
     return  filteredAds ? <div>
                 <Nav childToParent={childToParent}/>
-                <SearchBar />
+                <SearchBar childToParent={childToParent} />
                 <h2 style={{textAlign : "left", padding: "20px 0px 20px 0px", marginLeft: "15%"}}>We have found {Object.keys(filteredAds).length} ads for you.</h2>
                 {ads}
             </div> : <div>Loading</div>

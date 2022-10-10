@@ -4,7 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import CategoryOption from "../components/CategoryOption";
 import Nav from "../components/Nav";
 import TextInput from "../components/TextInput";
-import { getCategories } from "../Functions";
+import { getCategories, judete } from "../Functions";
 import camera4 from "../images/camera4.jpg";
 import { useUser } from "../UserProvider";
 
@@ -203,11 +203,16 @@ export default function NewAd(){
                     </div>
     }
 
+    let locations = [];
+    for(let judet of judete.sort()){
+        locations.push(<option value={judet}>{judet}</option>);
+    }
+
     return  <div>
                 <Nav />
                 <h2 style={{textAlign : "left", padding: "30px 0px 20px 0px", marginLeft: "10%"}}>Publish new ad</h2>
 
-                <form action="http://localhost:8080/ad/new" method="POST" encType="multipart/form-data" id="form" className="form">
+                <form action="http://localhost:8080/ad/new" method="POST" encType="multipart/form-data" id="form" className="form" style={{marginBottom: "30px"}}>
                     <input type="hidden" id="username" name="username" value={jwtDecode(user.jwt).sub} />
                     <div className="panel">
                         <TextInput title="title" value={formData.title} handleChange={handleChange} width={"60%"}/>
@@ -257,7 +262,11 @@ export default function NewAd(){
                     </div>
 
                     <div className="panel">
-                        <TextInput title="location" value={formData.location} handleChange={handleChange} width={"40%"}/>
+                        <label>Location</label>
+                        <select className="form-select" id="location" name="location" style={{width : "40%"}} 
+                            onChange={handleChange} value={formData.state}>
+                            {locations}
+                        </select>
                     </div>
 
                     <div className="panel">

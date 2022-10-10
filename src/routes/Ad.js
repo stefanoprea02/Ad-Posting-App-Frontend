@@ -7,6 +7,7 @@ import Nav from "../components/Nav";
 import SearchBar from "../components/SearchBar";
 import {adFavorite, removeFavorite, checkFavorite, getAd, getUser} from "../Functions";
 
+
 export default function Ad(){
 
     const {id} = useParams();
@@ -37,30 +38,57 @@ export default function Ad(){
         fetchData();
     }, []);
 
+    let images = [];
+    if(ad.images){
+        for(let image of ad.images){
+            if(image !== ""){
+                if(image === ad.images[0]){
+                    images.push(<div className="carousel-item active">
+                                <img src={image} className="d-block w-100 ad-img" alt="..." />
+                            </div>)
+                }else{
+                    images.push(<div className="carousel-item">
+                                    <img src={image} className="d-block w-100 ad-img" alt="..." />
+                                </div>)
+                }
+            }
+        }
+    }
+
     return  fetched ? <div>
                 <Nav />
                 <SearchBar />
                 <div className="row justify-content-center ad">
                     <div className="col-md-6">
-                        <div className="images">
-                            <img className="ad-img" src={ad.images[0]}></img>
+                        <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
+                            <div className="carousel-inner">
+                                {images}
+                            </div>
+                            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Previous</span>
+                            </button>
+                            <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Next</span>
+                            </button>
                         </div>
                         <div className="details">
                             <div className="details-top">
-                                <p>Posted at {ad.date}</p>
+                                <p style={{fontSize: "14px"}}>Posted at {ad.date}</p>
                                 {favorite === false && <button onClick={async () => { await adFavorite(id); setFavorite(true);}} 
                                     className="faButton"><FontAwesomeIcon icon={farHeart} /></button>}
                                 {favorite === true && <button onClick={async () => { await removeFavorite(id); setFavorite(false);}} 
                                     className="faButton"><FontAwesomeIcon icon={faHeart} /></button>}
                             </div>
                             <div className="details-title">
-                                <h3>{ad.title}</h3>
+                                <p style={{fontSize: "26px"}}>{ad.title}</p>
                             </div>
                             <div className="details-price">
-                                <h4>{ad.price}$ </h4>
+                                <p style={{fontWeight: "600", fontSize: "26px"}}>{ad.price}$ </p>
                                 <p>Negotiable : {ad.negotiable.toString()}</p>
                             </div>
-                            <div className="details-description">
+                            <div className="details-description" style={{marginTop: "20px"}}>
                                 <h3>Description</h3>
                                 <p>{ad.description}</p>
                             </div>

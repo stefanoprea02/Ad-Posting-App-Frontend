@@ -22,12 +22,12 @@ export default function SmallAdSearch(props){
                 </Link>
                 <div className="small-ad-search-right-side">
                     <div className="small-ad-search-top-side">
-                        <p>{props.title}</p>
-                        <p>{props.price}$</p>
+                        <p style={{fontSize: "20px"}}>{props.title}</p>
+                        <p style={{fontSize: "18px", fontWeight: "500"}}>{props.price}$</p>
                     </div>
                     <div className="small-ad-search-middle">
                         <p>{props.state}</p>
-                        {props.negotiable === true && <p>Price is negotiable</p>}
+                        {props.negotiable === true && <p style={{fontSize: "14px"}}>Price is negotiable</p>}
                     </div>
                     <div className="small-ad-search-bottom-side">
                         <p style={{fontSize: "12px"}}>{props.location} - {props.date}</p>
