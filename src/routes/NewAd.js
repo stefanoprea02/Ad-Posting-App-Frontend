@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 import React from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import CategoryOption from "../components/CategoryOption";
 import Nav from "../components/Nav";
 import TextInput from "../components/TextInput";
@@ -20,7 +20,8 @@ export default function NewAd(){
         location: "",
         contact_info: "",
         phone_number: "",
-        images: ["","","","","","","",""]
+        images: ["","","","","","","",""],
+        id: ""
     });
 
     const[errors, setErrors] = React.useState({
@@ -39,6 +40,7 @@ export default function NewAd(){
     const[categories, setCategories] = React.useState({});
     const navigate = useNavigate();
     const user = useUser();
+    const location = useLocation();
 
     function readFileDataAsBase64(f) {
         const file = f;
@@ -150,8 +152,27 @@ export default function NewAd(){
             setCategories(cate);
         }
         fetchData();
-    },[]);
+        
+        if(location.state != null){
+            const{ad} = location.state;
+            for(let key of Object.keys(ad)){
+                if(key in formData){
+                    formData[key] = ad[key];
+                }
+            }
 
+            for(let i = 1; i <= 8; i++){
+                const input = document.getElementById("imageFile" + i);
+                if(formData.images[i-1] != ""){
+                    input.type = "text";
+                    input.value = formData.images[i-1];
+                    const img = document.getElementById("image" + i);
+                    img.src = formData.images[i - 1];
+                }
+            }
+        }
+
+    },[]);
 
     React.useEffect(function(){
         if(submited == true){
@@ -197,15 +218,15 @@ export default function NewAd(){
     let images = [];
     for(let i = 1; i <= 8; i++){
         images[i] = <div className="addimage" key={i}>
-                        <img src={camera4} className="file-image" id={"image" + i}/>
+                        <img src={camera4} className="file-image" id={"image" + i} />
                         <input id={"imageFile" + i} name="images" type="file" className="file file-input" 
-                            onChange={event => handleChange(event, i)}/>
+                            onChange={event => handleChange(event, i)} />
                     </div>
     }
 
     let locations = [];
     for(let judet of judete.sort()){
-        locations.push(<option value={judet}>{judet}</option>);
+        locations.push(<option value={judet} key={judet}>{judet}</option>);
     }
 
     return  <div>
@@ -214,6 +235,7 @@ export default function NewAd(){
 
                 <form action="http://localhost:8080/ad/new" method="POST" encType="multipart/form-data" id="form" className="form" style={{marginBottom: "30px"}}>
                     <input type="hidden" id="username" name="username" value={jwtDecode(user.jwt).sub} />
+                    <input type="hidden" id="id" name="id" value={formData.id} />
                     <div className="panel">
                         <TextInput title="title" value={formData.title} handleChange={handleChange} width={"60%"}/>
                         <div className="categoryName">
@@ -232,8 +254,8 @@ export default function NewAd(){
                             <label>Negotiable</label>
                             <select className="form-select" id="negotiable" name="negotiable" style={{width : "40%"}} 
                                 onChange={handleChange} value={formData.negotiable}>
-                                <option value="True">Yes</option>
-                                <option value="False">No</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
                         <div className="state">
@@ -264,7 +286,7 @@ export default function NewAd(){
                     <div className="panel">
                         <label>Location</label>
                         <select className="form-select" id="location" name="location" style={{width : "40%"}} 
-                            onChange={handleChange} value={formData.state}>
+                            onChange={handleChange} value={formData.location}>
                             {locations}
                         </select>
                     </div>

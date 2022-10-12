@@ -35,8 +35,6 @@ export default function AdSearch(props){
         })
     }
 
-    console.log(url);
-
     React.useEffect(() => {
         if(url.charAt(url.length - 1) !== "?"){
             url = url + "&";
@@ -54,6 +52,7 @@ export default function AdSearch(props){
             url = url + "searchText=" + data.searchText;
         }
         async function fetchData(){
+            console.log(url);
             let ads = await getAdsFiltered(url);
             setFilteredAds(ads);
         }

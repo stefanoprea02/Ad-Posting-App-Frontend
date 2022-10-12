@@ -1,21 +1,34 @@
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faTrashAlt, faChevronRight, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import jwtDecode from "jwt-decode";
 import React from "react";
-import { Link, useParams, withRouter } from "react-router-dom";
+import { Link, useNavigate, useParams, withRouter } from "react-router-dom";
 import Nav from "../components/Nav";
 import SearchBar from "../components/SearchBar";
 import {adFavorite, removeFavorite, checkFavorite, getAd, getUser} from "../Functions";
+import { useUser } from "../UserProvider";
 
 
 export default function Ad(){
 
     const {id} = useParams();
+    const navigate = useNavigate();
+    const userContext = useUser();
 
     const [ad, setAd] = React.useState({});
     const [user, setUser] = React.useState({});
     const [fetched, setFetched] = React.useState(false);
     const [favorite, setFavorite] = React.useState(false);
+    const [adBelongsToUser, setAdBelongsToUser] = React.useState(false);
+
+    function deleteAd(){
+        console.log(ad.id);
+        fetch("http://localhost:8080/ads/delete/?adId=" + ad.id, {credentials: "include"})
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+        window.location.replace("http://localhost:3000");
+    }
 
     React.useEffect(() => {
         async function fetchData(){
@@ -23,6 +36,9 @@ export default function Ad(){
                 let userData = await getUser(ad.username);
                 setUser(userData);
                 setFetched(true);
+                if(ad.username === jwtDecode(userContext.jwt).sub){
+                    setAdBelongsToUser(true);
+                }
             }
         }
         fetchData();
@@ -43,7 +59,7 @@ export default function Ad(){
         for(let image of ad.images){
             if(image !== ""){
                 if(image === ad.images[0]){
-                    images.push(<div className="carousel-item active">
+                    images.push(<div className="carousel-item active" key={images.length}>
                                 <img src={image} className="d-block w-100 ad-img" alt="..." />
                             </div>)
                 }else{
@@ -76,10 +92,32 @@ export default function Ad(){
                         <div className="details">
                             <div className="details-top">
                                 <p style={{fontSize: "14px"}}>Posted at {ad.date}</p>
-                                {favorite === false && <button onClick={async () => { await adFavorite(id); setFavorite(true);}} 
-                                    className="faButton"><FontAwesomeIcon icon={farHeart} /></button>}
-                                {favorite === true && <button onClick={async () => { await removeFavorite(id); setFavorite(false);}} 
-                                    className="faButton"><FontAwesomeIcon icon={faHeart} /></button>}
+                                {favorite === false && 
+                                    <div style={{display: "flex", alignItems: "start"}}>
+                                        {adBelongsToUser && <button onClick={() => deleteAd()} className="faButton">
+                                            <FontAwesomeIcon icon={faTrashAlt} className="icon" />
+                                        </button>}
+                                        {adBelongsToUser && <Link to="/ad/new" state={{ad: ad}} className="faButton">
+                                            <FontAwesomeIcon icon={faEdit} className="icon" />
+                                        </Link>}
+                                        <button onClick={async () => { await adFavorite(id); setFavorite(true);}} className="faButton">
+                                            <FontAwesomeIcon icon={farHeart} />
+                                        </button>
+                                    </div>
+                                }
+                                {favorite === true && 
+                                    <div style={{display: "flex", alignItems: "start"}}>
+                                        {adBelongsToUser && <button onClick={() => deleteAd()} className="faButton">
+                                            <FontAwesomeIcon icon={faTrashAlt} className="icon" />
+                                        </button>}
+                                        {adBelongsToUser && <Link to="/ad/new" className="faButton">
+                                            <FontAwesomeIcon icon={faEdit} className="icon" />
+                                        </Link>}
+                                        <button onClick={async () => { await removeFavorite(id); setFavorite(false);}} className="faButton">
+                                            <FontAwesomeIcon icon={faHeart} />
+                                        </button>
+                                    </div>
+                                }
                             </div>
                             <div className="details-title">
                                 <p style={{fontSize: "26px"}}>{ad.title}</p>
@@ -99,7 +137,12 @@ export default function Ad(){
                             <h3>{user.username}</h3>
                             <p>Registered on {user.date}</p>
                             <p>Last online on {user.lastOnline.split("T")[0]} at {user.lastOnline.split("T")[1].split(".")[0]}</p>
-                            <p style={{textAlign: "center", marginTop: "15px", fontSize: "17px"}}><Link to="/ads/filter" state={{username: user.username}}>More from this seller</Link></p>
+                            <p>Phone number : {ad.phone_number}</p>
+                            <p>Contact name : {ad.contact_info}</p>
+                            <p style={{textAlign: "center", marginTop: "15px", fontSize: "17px"}}>
+                                <Link to="/ads/filter" state={{username: user.username}}>More from this seller <FontAwesomeIcon icon={faChevronRight} style={{fontSize: "14px"}}/>
+                                </Link>
+                            </p>
                         </div>
                         <div className="location">
                             <h4>Location</h4>

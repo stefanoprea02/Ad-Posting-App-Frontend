@@ -63,7 +63,7 @@ export default function LoginForm(){
                     <input type="text" className="form-control" id="username" name="username" placeholder="username" />
                 </div>
                 <div className="password">
-                    <input type="text" className="form-control has-error" id="password" name="password" placeholder="password" />
+                    <input type="password" className="form-control has-error" id="password" name="password" placeholder="password" />
                 </div>
                 <input className="btn btn-primary" type="button" value="Submit" onClick={() => handleSubmit()}></input>
             </form>

@@ -30,51 +30,36 @@ export default function RegisterForm(){
     }
 
     function handleSubmit(){
-        fetch("http://localhost:8080/api/auth/checkUsername/" + formData.username)
-        .then((response) => {
-            if(response.status === 204) return "valid";
-            else return "invalid";
+        const formData2 = new FormData(document.getElementById("form"));
+        fetch("http://localhost:8080/api/auth/register",{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json'
+            },
+            body: formData2
         })
+        .then((response) => response.json())
         .then((data) => {
-            if(data === "valid"){
-                const formData2 = new FormData(document.getElementById("form"));
-                fetch("http://localhost:8080/api/auth/register",{
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    body: formData2
-                }).then((response) => response.json())
-                  .then((data) => {
-                    if("error" in data){
-                        let keys = Object.keys(data["error"]);
-                        for(const key of keys){
-                            let message = data["error"][key];
-                            setErrors((prevFormData) => {
-                                return {
-                                    ...prevFormData,
-                                    [key]: message
-                                }
-                            });
+            console.log(data);
+            if("error" in data){
+                let keys = Object.keys(data["error"]);
+                for(const key of keys){
+                    let message = data["error"][key];
+                    setErrors((prevFormData) => {
+                        return {
+                            ...prevFormData,
+                            [key]: message
                         }
-                        setSubmited(true);
-                    }else{
-                        user.setJwt(data.token);
-                        Cookies.set('jwt', data.token);
-                        navigate("/");
-                        return data;
-                    }
-                  });
+                    });
+                }
             }else{
-                setErrors(prevFormData => {
-                    return{
-                        ...prevFormData,
-                        username: ["Username already in use"]
-                    }
-                })
-                setSubmited(true);
+                user.setJwt(data.token);
+                Cookies.set('jwt', data.token);
+                navigate("/");
+                return data;
             }
         });
+        setSubmited(true);
         const keys = Object.keys(errors);
         for(const key of keys){
             errors[key] = [];
@@ -86,7 +71,7 @@ export default function RegisterForm(){
             let keys = Object.keys(errors);
             for(const key of keys){
                 if(errors[key].length > 0){
-                    if(!document.getElementById(key).classList.contains("is-invalid")){
+                    if(!document.getElementById(key).classList.contains("is-invalid")){ 
                         let divWithError = document.getElementsByClassName(key)[0];
                         divWithError.classList.add("has-error");
                         let input = document.getElementById(key);
@@ -123,7 +108,7 @@ export default function RegisterForm(){
                     />
                 </div>
                 <div className="password">
-                    <input type="text" className="form-control has-error" id="password" name="password" placeholder="password" 
+                    <input type="password" className="form-control has-error" id="password" name="password" placeholder="password" 
                         onChange={handleChange} value={formData.password}
                     />
                 </div>

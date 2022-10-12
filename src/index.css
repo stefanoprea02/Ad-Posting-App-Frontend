@@ -117,7 +117,8 @@ label{
 
 .file-image{
   width: 100%;
-  background-color: grey;
+  height: inherit;
+  object-fit: cover;
   grid-column: 1;
   grid-row: 1;
   z-index: 0;
@@ -297,7 +298,11 @@ label{
 }
 
 .fa-heart{
-  font-size: 24px;
+  font-size: 22px;
+}
+
+.fa-heart:hover{
+  color: #0d6efd;
 }
 
 .small-ad-search{
@@ -373,6 +378,7 @@ label{
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   max-height: 500px;
   overflow: hidden;
+  z-index: 10;
 }
 
 .search-result{
@@ -392,4 +398,45 @@ label{
 .search-result:hover{
   background-color: #457a93;
   color: white;
+}
+
+.deleteAd{
+  background-color: lightskyblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  height: 50px;
+}
+
+.deleteAd:hover{
+  background-color: #457a93;
+  color: white;
+  transition: 0.1s;
+}
+
+.carousel-control-prev-icon{
+  background-color: rgba(70, 70, 70, 0.25);
+}
+
+.carousel-control-prev-icon:hover{
+  background-color: rgba(70, 70, 70, 0.75);
+}
+
+.carousel-control-next-icon{
+  background-color: rgba(70, 70, 70, 0.25);
+}
+
+.carousel-control-next-icon:hover{
+  background-color: rgba(70, 70, 70, 0.75);
+}
+
+.icon{
+  margin-right: 5px;
+  font-size: 18px;
+}
+
+.icon:hover{
+  color: #0d6efd;
 }
