@@ -8,9 +8,9 @@ export default function TextInput(props){
             labelText = "Contact name";
         }
     }
-    return  <div className={props.title}>
+    return  <div className={props.title} style={{width : props.width}} >
                 <label className="form-label">{labelText}</label>
-                <input type="text" className="form-control" name={props.title} id={props.title} style={{width : props.width}} 
+                <input type="text" className="form-control" name={props.title} id={props.title} 
                     onChange={props.handleChange} value={props.value}/>
             </div>
 }
