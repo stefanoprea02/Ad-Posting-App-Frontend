@@ -59,22 +59,22 @@ export default function AdSearch(props){
         if(data.category != null && data.category != ""){
             url = url + "category=" + data.category + "&";
         }
-        if(data.username != null){
+        if(data.username != null && data.username != ""){
             url = url + "username=" + data.username + "&";
         }
-        if(data.searchText != null){
+        if(data.searchText != null && data.searchText != ""){
             url = url + "searchText=" + data.searchText + "&";
         }
-        if(data.negotiable != ""){
+        if(data.negotiable != null && data.negotiable != ""){
             url = url + "negotiable=" + data.negotiable + "&";
         }
-        if(data.minPrice != ""){
+        if(data.minPrice != null && data.minPrice != ""){
             url = url + "minPrice=" + data.minPrice + "&";
         }
-        if(data.maxPrice != ""){
+        if(data.maxPrice != null && data.maxPrice != ""){
             url = url + "maxPrice=" + data.maxPrice + "&";
         }
-        if(data.state != ""){
+        if(data.state != null && data.state != ""){
             url = url + "state=" + data.state + "&";
         }
         if(url.charAt(url.length - 1) == "&"){
@@ -100,8 +100,6 @@ export default function AdSearch(props){
     if(filteredAds && Object.keys(filteredAds).length != 0){
         if(data.sort === "ascending"){
             let a = filteredAds.sort((a, b) => parseInt(a.price) - parseInt(b.price));
-            console.log(a);
-            console.log(filteredAds);
             if(filteredAds !== a) {
                 console.log("da");
                 setFilteredAds(a);

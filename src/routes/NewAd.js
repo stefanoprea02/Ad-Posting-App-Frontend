@@ -97,6 +97,7 @@ export default function NewAd(){
         }
 
         const formData2 = new FormData(document.getElementById("form"));
+        let responseType = "";
 
         const response = await fetch('http://localhost:8080/ad/new', {
             credentials: 'include',
@@ -105,7 +106,14 @@ export default function NewAd(){
                 'Accept': 'application/json'
             },
             body: formData2
-        }).then((response) => response.json())
+        }).then((response) => {
+            if(response.status === 400){
+                return response.json();
+            }else{
+                responseType = "ok";
+                return response.json();
+            }
+        })
           .then((data) => {
             setSubmited(true);
             setFormData((prevFormData) => {
@@ -114,10 +122,10 @@ export default function NewAd(){
                     images: ["","","","","","","",""]
                 }
             })
-            if("error" in data){
-                let keys = Object.keys(data["error"]);
+            if(responseType !== "ok"){
+                let keys = Object.keys(data);
                 for(const key of keys){
-                    let message = data["error"][key];
+                    let message = data[key];
                     setErrors((prevFormData) => {
                         return {
                             ...prevFormData,
@@ -136,7 +144,8 @@ export default function NewAd(){
                     picture.src = camera4;
                 }
             }else{
-                navigate(`/ad/${data["succes"]["id"]}`);
+                console.log(data);
+                navigate(`/ad/${data["id"]}`);
             }
           });
 

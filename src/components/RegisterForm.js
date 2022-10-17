@@ -30,6 +30,19 @@ export default function RegisterForm(){
     }
 
     function handleSubmit(){
+        fetch("http://localhost:8080/api/auth/checkUsername/" + formData.username)
+        .then((response) => response.json())
+        .then((data) => {
+            if(data === true){
+                setErrors(prevFormData => {
+                    return {
+                        ...prevFormData,
+                        username: [...errors.username, "Username already exists"]
+                    }
+                })
+            }
+        });
+
         const formData2 = new FormData(document.getElementById("form"));
         fetch("http://localhost:8080/api/auth/register",{
             method: 'POST',
@@ -38,13 +51,22 @@ export default function RegisterForm(){
             },
             body: formData2
         })
-        .then((response) => response.json())
+        .then((response) => {
+            if(response.status === 400){
+                return response.json();
+            }else{
+                return "ok";
+            }
+        })
         .then((data) => {
-            console.log(data);
-            if("error" in data){
-                let keys = Object.keys(data["error"]);
+            if(data === "ok"){
+                user.setJwt(data.token);
+                Cookies.set('jwt', data.token);
+                navigate("/");
+            }else{
+                let keys = Object.keys(data);
                 for(const key of keys){
-                    let message = data["error"][key];
+                    let message = data[key];
                     setErrors((prevFormData) => {
                         return {
                             ...prevFormData,
@@ -52,13 +74,9 @@ export default function RegisterForm(){
                         }
                     });
                 }
-            }else{
-                user.setJwt(data.token);
-                Cookies.set('jwt', data.token);
-                navigate("/");
-                return data;
             }
         });
+
         setSubmited(true);
         const keys = Object.keys(errors);
         for(const key of keys){
@@ -99,7 +117,7 @@ export default function RegisterForm(){
     return  <form method="POST" id="form" className="login-form">
                 <div className="username">
                     <input type="text" className="form-control" id="username" name="username" placeholder="username" 
-                        onChange={handleChange} value={formData.username}
+                        onChange={handleChange} value={formData.username} style={{width: "300px"}}
                     />
                 </div>
                 <div className="email">

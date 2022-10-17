@@ -63,14 +63,14 @@ export default function Ad(){
                                 <img src={image} className="d-block w-100 ad-img" alt="..." />
                             </div>)
                 }else{
-                    images.push(<div className="carousel-item">
+                    images.push(<div className="carousel-item" key={images.length}>
                                     <img src={image} className="d-block w-100 ad-img" alt="..." />
                                 </div>)
                 }
             }
         }
     }
-
+    
     return  fetched ? <div>
                 <Nav />
                 <SearchBar />
@@ -110,7 +110,7 @@ export default function Ad(){
                                         {adBelongsToUser && <button onClick={() => deleteAd()} className="faButton">
                                             <FontAwesomeIcon icon={faTrashAlt} className="icon" />
                                         </button>}
-                                        {adBelongsToUser && <Link to="/ad/new" className="faButton">
+                                        {adBelongsToUser && <Link to="/ad/new" state={{ad: ad}} className="faButton">
                                             <FontAwesomeIcon icon={faEdit} className="icon" />
                                         </Link>}
                                         <button onClick={async () => { await removeFavorite(id); setFavorite(false);}} className="faButton">
@@ -135,8 +135,9 @@ export default function Ad(){
                     <div className="col-md-3">
                         <div className="userDetails">
                             <h3>{user.username}</h3>
-                            <p>Registered on {user.date}</p>
-                            <p>Last online on {user.lastOnline.split("T")[0]} at {user.lastOnline.split("T")[1].split(".")[0]}</p>
+                            <p>Registered on {user.date[0]}.{user.date[1]}.{user.date[2]}</p>
+                            <p>Last online on {user.lastOnline[0] + "." + user.lastOnline[1] + "." + user.lastOnline[2]} at {
+                            user.lastOnline[3] + ":" + user.lastOnline[4] + ":" + user.lastOnline[5]}</p>
                             <p>Phone number : {ad.phone_number}</p>
                             <p>Contact name : {ad.contact_info}</p>
                             <p style={{textAlign: "center", marginTop: "15px", fontSize: "17px"}}>

@@ -34,9 +34,8 @@ export default function LoginForm(){
             }else{
                 console.log(data);
                 user.setJwt(data);
-                //Cookies.set('jwt', data);
+                Cookies.set("jwt", data);
                 navigate("/");
-                return data;
             }
           });
     }
@@ -61,7 +60,7 @@ export default function LoginForm(){
 
     return   <form method="POST" id="form" className="login-form">
                 <div className="username">
-                    <input type="text" className="form-control" id="username" name="username" placeholder="username" />
+                    <input type="text" className="form-control" id="username" name="username" placeholder="username" style={{width: "300px"}} />
                 </div>
                 <div className="password">
                     <input type="password" className="form-control has-error" id="password" name="password" placeholder="password" />

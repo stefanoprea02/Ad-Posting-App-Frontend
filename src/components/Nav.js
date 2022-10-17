@@ -37,9 +37,6 @@ export default function Nav(props){
                     <div className="collapse navbar-collapse" id="navbarSupportedContent" style={{flexGrow: "0"}}>
                         <ul className="navbar-nav">
                             <li className="nav-item">
-                                <a className="nav-link">Messages</a>
-                            </li>
-                            <li className="nav-item">
                                 <Link to="/ads/filter" state={{favorite: true}} className="nav-link" onClick={() => linkClick("favorite", true)}>Favorites</Link>
                             </li>
                             <li className="nav-item dropdown">
@@ -49,7 +46,6 @@ export default function Nav(props){
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <Link to="/ads/filter" state={{username: jwtDecode(user.jwt).sub}} className="dropdown-item" onClick={() => linkClick("username", jwtDecode(user.jwt).sub)}>My Posts</Link>
-                                    <li><a className="dropdown-item" href="#">Messages</a></li>
                                     <li><hr className="dropdown-divider"/></li>
                                     <li><a className="dropdown-item" onClick={() => logout()}>Log out</a></li>
                                 </ul>

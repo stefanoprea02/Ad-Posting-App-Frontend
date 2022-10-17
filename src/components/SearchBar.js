@@ -13,21 +13,28 @@ export default function SearchBar(props){
     const [searching ,setSearching] = React.useState(false);
     const [inputValue, setInputValue] = React.useState("");
 
-    function handleSubmit(){}
-
     function linkClick(x, y){
-        if(window.location.href == "http://localhost:3000/ads/filter")
+        if(window.location.href === "http://localhost:3000/ads/filter")
             props.childToParent(x, y);
+        else if(window.location.href.includes("http://localhost:3000/ad/")){
+            window.location.replace("http://localhost:3000/ad/" + y);
+        }
     }
 
     let searchResults = [];
     for(let key of Object.keys(options)){
         if(options[key].length != 0){
             searchResults.push(options[key].map(obiect => {
-                return  <Link to="/ads/filter" state={{[key]: obiect}} className="search-result" key={obiect} onClick={() => linkClick([key], obiect)}>
-                            <p>{categoryDescriptionToName(obiect)}</p>
+                if(key === "ad")
+                    return  <Link to={`/ad/${obiect[1]}`} className="search-result" key={obiect} onClick={() => linkClick([key], obiect[1])}>
+                            <p>{categoryDescriptionToName(obiect[0])}</p>
                             <p>{key}</p>
                         </Link>
+                else
+                    return  <Link to="/ads/filter" state={{[key]: obiect}} className="search-result" key={obiect} onClick={() => linkClick([key], obiect)}>
+                                <p>{categoryDescriptionToName(obiect)}</p>
+                                <p>{key}</p>
+                            </Link>
             }))
         }
     }
@@ -42,32 +49,30 @@ export default function SearchBar(props){
     }
 
     React.useEffect(function(){
-        setOptions({
-            ad: [],
-            username: [],
-            category: []
-        })
-
-        const formData = new FormData(document.getElementsByTagName("form")[0]);
-
-        Object.keys(options).forEach(options_key => {
-            fetch("http://localhost:8080/search/" + options_key, {
-            credentials: "include",
-            headers: {
-                'Accept': 'application/json'
-            },
-            method: "POST",
-            body: formData
+        if(inputValue != ""){
+            setOptions({
+                ad: [],
+                username: [],
+                category: []
             })
-            .then((response) => response.json())
-            .then((data) => Object.keys(data).forEach(data_key => {setOptions(prevFormData => {
-                let username2 = data[data_key][map[options_key]];
-                return {
-                    ...prevFormData,
-                    [options_key]: [...prevFormData[options_key], username2]
-                }
-            })}));
-        });
+
+            Object.keys(options).forEach(options_key => {
+                fetch("http://localhost:8080/search/" + options_key + "/" + inputValue, {credentials: "include"})
+                .then((response) => response.json())
+                .then((data) => Object.keys(data).forEach(data_key => {setOptions(prevFormData => {
+                    let username2;
+                    if(options_key === "ad"){
+                        username2 = [data[data_key][map[options_key]], data[data_key]["id"]];
+                    }else{
+                        username2 = data[data_key][map[options_key]];
+                    }
+                    return {
+                        ...prevFormData,
+                        [options_key]: [...prevFormData[options_key], username2]
+                    }
+                })}));
+            });
+        }
     }, [inputValue]);
 
     return  <div>
