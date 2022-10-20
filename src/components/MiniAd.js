@@ -22,7 +22,7 @@ export default function MiniAd(props){
                 </Link>
                 <p>{props.title}</p>
                 <div style={{display: "flex", flexDirection: "column"}}>
-                    <p style={{fontSize: "12px"}}>{props.location} - {props.date}</p>
+                    <p style={{fontSize: "12px"}}>{props.location} - {`${props.date[0]}.${props.date[1]}.${props.date[2]}`}</p>
                     <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                         <p>{props.price}$</p>
                         {favorite === false && <button onClick={async () => { await adFavorite(props.id); setFavorite(true);}} 

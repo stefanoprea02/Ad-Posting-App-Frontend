@@ -70,7 +70,7 @@ export default function Ad(){
             }
         }
     }
-    
+
     return  fetched ? <div>
                 <Nav />
                 <SearchBar />
@@ -128,7 +128,7 @@ export default function Ad(){
                             </div>
                             <div className="details-description" style={{marginTop: "20px"}}>
                                 <h3>Description</h3>
-                                <p>{ad.description}</p>
+                                <p className="display-linebreak">{ad.description}</p>
                             </div>
                         </div>
                     </div>

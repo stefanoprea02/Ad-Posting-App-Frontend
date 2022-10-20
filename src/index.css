@@ -113,6 +113,7 @@ label{
 
 .btn{
   float: right;
+  color: #243f4a !important;
 }
 
 .addimage{
@@ -273,11 +274,12 @@ label{
 
 .button-notselected{
   background-color: lightskyblue;
-  color: white;
+  color: #243f4a;
 }
 
 .button-notselected:hover{
   background-color: #457a93;
+  color: white;
   transition: 0.1s;
 }
 
@@ -297,6 +299,7 @@ label{
 
 .btn:hover{
   background-color: #457a93 !important;
+  color: white !important;
 }
 
 .faButton{
@@ -466,4 +469,8 @@ label{
   .form-select{
     min-width: 230px !important;
   }
+}
+
+.display-linebreak {
+  white-space: pre-line;
 }
