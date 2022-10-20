@@ -1,4 +1,4 @@
-# Spring Recipe App
+# Ad posting app
 
 Created using JavaScript(React), Java(Spring), CSS(Bootstrap).
 
