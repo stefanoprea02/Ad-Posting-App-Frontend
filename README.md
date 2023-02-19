@@ -14,16 +14,8 @@ Created using JavaScript(React), Java(Spring), CSS(Bootstrap).
 <details>
   <summary><h2>Screenshots from the app</h2></summary>
   <details>
-    <summary>Log in page</summary>
-    <img src="/readme-images/Login.png" name="Log-in-page">
-  </details>
-  <details>
     <summary>Register page</summary>
     <img src="/readme-images/Register.png" name="Register-page">
-  </details>
-  <details>
-    <summary>Register error page</summary>
-    <img src="/readme-images/RegisterError.png" name="Register-error">
   </details>
   <details>
     <summary>Home</summary>
@@ -48,5 +40,9 @@ Created using JavaScript(React), Java(Spring), CSS(Bootstrap).
   <details>
     <summary>Seach bar</summary>
     <img src="/readme-images/SearchBar.png" name="SearchBar">
+  </details>
+  <details>
+    <summary>Messages</summary>
+    <img src="/readme-images/Messages.jpeg" name="Messages">
   </details>
 </details>
