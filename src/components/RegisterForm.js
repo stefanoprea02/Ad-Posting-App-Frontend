@@ -39,41 +39,41 @@ export default function RegisterForm(){
                         ...prevFormData,
                         username: [...errors.username, "Username already exists"]
                     }
+                });
+            }else{
+                const formData2 = new FormData(document.getElementById("form"));
+                fetch("http://localhost:8080/api/auth/register",{
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    body: formData2
                 })
-            }
-        });
-
-        const formData2 = new FormData(document.getElementById("form"));
-        fetch("http://localhost:8080/api/auth/register",{
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json'
-            },
-            body: formData2
-        })
-        .then((response) => {
-            if(response.status === 400){
-                return response.json();
-            }else{
-                return "ok";
-            }
-        })
-        .then((data) => {
-            if(data === "ok"){
-                user.setJwt(data.token);
-                Cookies.set('jwt', data.token);
-                navigate("/");
-            }else{
-                let keys = Object.keys(data);
-                for(const key of keys){
-                    let message = data[key];
-                    setErrors((prevFormData) => {
-                        return {
-                            ...prevFormData,
-                            [key]: message
+                .then((response) => {
+                    if(response.status === 400){
+                        return response.json();
+                    }else{
+                        return "ok";
+                    }
+                })
+                .then((data) => {
+                    if(data === "ok"){
+                        user.setJwt(data.token);
+                        Cookies.set('jwt', data.token);
+                        navigate("/");
+                    }else{
+                        let keys = Object.keys(data);
+                        for(const key of keys){
+                            let message = data[key];
+                            setErrors((prevFormData) => {
+                                return {
+                                    ...prevFormData,
+                                    [key]: message
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                });
             }
         });
 

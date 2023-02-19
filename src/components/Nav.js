@@ -39,6 +39,9 @@ export default function Nav(props){
                             <li className="nav-item">
                                 <Link to="/ads/filter" state={{favorite: true}} className="nav-link" onClick={() => linkClick("favorite", true)}>Favorites</Link>
                             </li>
+                            <li className="nav-item">
+                                <Link to="/messages" className="nav-link">Messages</Link>
+                            </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" 
                                 data-bs-toggle="dropdown" aria-expanded="false">

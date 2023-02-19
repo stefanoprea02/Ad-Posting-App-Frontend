@@ -3,7 +3,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link } from "react-router-dom";
-import {adFavorite, removeFavorite, checkFavorite} from "../Functions";
+import {adFavorite, removeFavorite, checkFavorite, getDate} from "../Functions";
 
 export default function MiniAd(props){
     const [favorite, setFavorite] = React.useState(false);
@@ -22,7 +22,7 @@ export default function MiniAd(props){
                 </Link>
                 <p>{props.title}</p>
                 <div style={{display: "flex", flexDirection: "column"}}>
-                    <p style={{fontSize: "12px"}}>{props.location} - {`${props.date[0]}.${props.date[1]}.${props.date[2]}`}</p>
+                    <p style={{fontSize: "12px"}}>{props.location} - {getDate(props.date)}</p>
                     <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                         <p>{props.price}$</p>
                         {favorite === false && <button onClick={async () => { await adFavorite(props.id); setFavorite(true);}} 

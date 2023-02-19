@@ -6,7 +6,7 @@ import React from "react";
 import { Link, useNavigate, useParams, withRouter } from "react-router-dom";
 import Nav from "../components/Nav";
 import SearchBar from "../components/SearchBar";
-import {adFavorite, removeFavorite, checkFavorite, getAd, getUser} from "../Functions";
+import {adFavorite, removeFavorite, checkFavorite, getAd, getUser, getTime, getDate} from "../Functions";
 import { useUser } from "../UserProvider";
 
 
@@ -91,7 +91,7 @@ export default function Ad(){
                         </div>
                         <div className="details">
                             <div className="details-top">
-                                <p style={{fontSize: "14px"}}>Posted at {ad.date}</p>
+                                <p style={{fontSize: "14px"}}>Posted at {getDate(ad.date)}</p>
                                 {favorite === false && 
                                     <div style={{display: "flex", alignItems: "start"}}>
                                         {adBelongsToUser && <button onClick={() => deleteAd()} className="faButton">
@@ -135,15 +135,19 @@ export default function Ad(){
                     <div className="col-md-3">
                         <div className="userDetails">
                             <h3>{user.username}</h3>
-                            <p>Registered on {user.date[0]}.{user.date[1]}.{user.date[2]}</p>
-                            <p>Last online on {user.lastOnline[0] + "." + user.lastOnline[1] + "." + user.lastOnline[2]} at {
-                            user.lastOnline[3] + ":" + user.lastOnline[4] + ":" + user.lastOnline[5]}</p>
+                            <p>Registered on {getDate(user.date)}</p>
+                            <p>Last online on {getDate(user.lastOnline)} at {getTime(user.lastOnline)}</p>
                             <p>Phone number : {ad.phone_number}</p>
                             <p>Contact name : {ad.contact_info}</p>
                             <p style={{textAlign: "center", marginTop: "15px", fontSize: "17px"}}>
                                 <Link to="/ads/filter" state={{username: user.username}}>More from this seller <FontAwesomeIcon icon={faChevronRight} style={{fontSize: "14px"}}/>
                                 </Link>
                             </p>
+                            {!adBelongsToUser &&
+                            <p style={{textAlign: "center", marginTop: "10px", fontSize: "17px"}}>
+                                <Link to="/messages" state={{conversation: user.username}}>Send a message <FontAwesomeIcon icon={faChevronRight} style={{fontSize: "14px"}}/>
+                                </Link>
+                            </p>}
                         </div>
                         <div className="location">
                             <h4>Location</h4>

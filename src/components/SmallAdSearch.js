@@ -2,7 +2,7 @@ import React from "react";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { adFavorite, checkFavorite, removeFavorite } from "../Functions";
+import { adFavorite, checkFavorite, removeFavorite, getDate } from "../Functions";
 import { Link } from "react-router-dom";
 
 export default function SmallAdSearch(props){
@@ -30,7 +30,7 @@ export default function SmallAdSearch(props){
                         {props.negotiable === true && <p style={{fontSize: "14px"}}>Price is negotiable</p>}
                     </div>
                     <div className="small-ad-search-bottom-side">
-                        <p style={{fontSize: "12px"}}>{props.location} - {props.date}</p>
+                        <p style={{fontSize: "12px"}}>{props.location} - {getDate(props.date)}</p>
                         {favorite === false && <button onClick={async () => { await adFavorite(props.id); setFavorite(true);}} 
                             className="faButton"><FontAwesomeIcon icon={farHeart} /></button>}
                         {favorite === true && <button onClick={async () => { await removeFavorite(props.id); setFavorite(false);}} 

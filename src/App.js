@@ -8,9 +8,9 @@ import Ad from './routes/Ad';
 import Login from './routes/Login';
 import Private from './routes/Private';
 import AdSearch from './routes/AdSearch';
+import Messages from './routes/Messages';
 
 function App() {
-
   return (
     <div className="App">
       <BrowserRouter>
@@ -19,6 +19,7 @@ function App() {
           <Route path='/ad/new' element={<Private><NewAd /></Private>} />
           <Route path='/ad/:id' element={<Private><Ad /></Private>} />
           <Route path='/ads/filter' element={<Private><AdSearch /></Private>} />
+          <Route path='/messages' element={<Private><Messages /></Private>}></Route>
           <Route path='/login' element={<Login />} />
         </Routes>
       </BrowserRouter>
